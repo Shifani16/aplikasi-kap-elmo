@@ -760,22 +760,17 @@ public class File extends javax.swing.JFrame {
 
     private void navFileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navFileMouseClicked
         // TODO add your handling code here:
-        File file = new File();
-        close();
 
-        file.show();
     }//GEN-LAST:event_navFileMouseClicked
 
     private void navFileMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navFileMouseEntered
         // TODO add your handling code here:
-        navFile.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        navFile.setBackground(new Color(0, 102, 153));
+
     }//GEN-LAST:event_navFileMouseEntered
 
     private void navFileMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navFileMouseExited
         // TODO add your handling code here:
-        navFile.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        navFile.setBackground(new Color(0, 51, 102));
+
     }//GEN-LAST:event_navFileMouseExited
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
