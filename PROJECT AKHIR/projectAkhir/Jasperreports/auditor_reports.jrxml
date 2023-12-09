@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_3" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cd09b296-7521-4f73-ae32-a925f41aa0ab">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Project Akhir Basdat"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM auditor]]>
+	</queryString>
+	<field name="no_auditor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="no_auditor"/>
+		<property name="com.jaspersoft.studio.field.label" value="no_auditor"/>
+	</field>
+	<field name="nama" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nama"/>
+		<property name="com.jaspersoft.studio.field.label" value="nama"/>
+	</field>
+	<field name="alamat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="alamat"/>
+		<property name="com.jaspersoft.studio.field.label" value="alamat"/>
+	</field>
+	<field name="gaji" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="gaji"/>
+		<property name="com.jaspersoft.studio.field.label" value="gaji"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="125" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="22" width="595" height="49" forecolor="#97A1BF" backcolor="#00609C" uuid="26ea5e0c-b872-4ea1-9e96-59e9ff7ba6da">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Tw Cen MT Condensed Extra Bold" size="41" isBold="true"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<text><![CDATA[AUDITOR'S MANAGER REPORTS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-20" y="72" width="595" height="40" forecolor="#A7B0C4" backcolor="#00609C" uuid="2a2ab927-e888-4c3d-8a14-f7b0bf7e8836"/>
+				<textElement textAlignment="Center">
+					<font fontName="Poppins ExtraBold" size="21" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[AUDITOR  LIST]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="-20" y="-23" width="45" height="29" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#00609C" uuid="d6c8c16e-1799-499c-ba00-4f4922bef836"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-20" y="-23" width="20" height="143" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#00609C" uuid="f26d12e9-c690-45e6-9135-db1652195b1d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="530" y="-20" width="45" height="29" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#00609C" uuid="9778e31c-f57c-4b86-acdb-53667065b861"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="430" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#4E97D1" uuid="7953c6cd-bbac-4cb5-9b36-11932f760c50"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="230" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#BBE2EC" uuid="c5699bbc-b340-46d3-a082-3f03adc803ba"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="80" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#4E97D1" uuid="7f28784f-b2f6-4c84-987d-bc004ca7be55"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="180" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#A3CEEF" uuid="bc69b273-2ec9-412e-909a-04819be94bb2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="330" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#A3CEEF" uuid="18aef766-7e1f-499c-a446-69e2a737b789"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="380" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#7BB4E3" uuid="bc03efac-85ea-409d-bcc2-681592a2b360"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="480" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#006DB2" uuid="e5f4864b-77ca-4389-bd08-aa062eaf172b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="30" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#006DB2" uuid="16180584-e2a1-401a-bbe8-2e6e9ac6fa57"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#BBE2EC" uuid="1732cfb7-7ac3-42c4-a900-46c443127c49"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="130" y="-20" width="45" height="26" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#7BB4E3" uuid="9cdcd1c8-9e3a-4ff2-8f72-2713159d8930"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="555" y="-20" width="20" height="140" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#00609C" uuid="d6d093d6-c131-489e-bb2d-fe8ab5647f75"/>
+			</rectangle>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="92" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-20" y="30" width="595" height="20" forecolor="#B8C7CF" backcolor="#00609C" uuid="bb567801-2836-46d6-8115-de1d21a37972"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-20" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.05882353)" backcolor="#00609C" uuid="4b79e7e0-6067-423e-a608-63da408bd6b1"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="30" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#006DB2" uuid="5f310b00-420e-4133-b429-777fdf3b3dc5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="80" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#4E97D1" uuid="8712919d-e7c8-4e73-a884-7e46add5c7fa"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="230" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#BBE2EC" uuid="579e445a-93bc-4426-b350-bf760e3e8f30"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="130" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#7BB4E3" uuid="a79e84db-9d6f-4012-8ce8-ca2b25c9356e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="180" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#A3CEEF" uuid="0814b964-81be-43b2-98da-0e05decf09a0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="530" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#00609C" uuid="caf5073d-194e-49d1-b4e1-77f55066181e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="380" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#7BB4E3" uuid="d88966f1-2799-4356-b2cd-c9f460255e33"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="480" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#006DB2" uuid="52206a4e-090a-4489-afa6-deaf9d8f150a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="280" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#BBE2EC" uuid="c84cf05a-5864-4ebb-ace0-f60a53f952e3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="330" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#A3CEEF" uuid="4ad074ba-440f-48a7-a1fd-83851bea9dc9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="430" y="-5" width="45" height="31" forecolor="rgba(0, 0, 0, 0.0)" backcolor="#4E97D1" uuid="ff73bc8f-5582-40bd-8b39-c70c38b4d562"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="-20" y="59" width="595" height="20" forecolor="#B8C7CF" backcolor="#4E97D1" uuid="22dcbf4e-56f7-456f-8473-306875334299"/>
+			</rectangle>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="4" width="100" height="30" uuid="5f7ae875-4431-4eeb-87d3-d82d034be579">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c2bb853a-798d-41ce-bf6b-b1108b4671b7"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Serif Condensed" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[no_auditor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="4" width="110" height="30" uuid="5ccccb06-3810-42ce-abda-065bab87b13b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="201b89fe-ec9f-4c5e-9256-834e715d3116"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Serif Condensed" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="4" width="230" height="30" uuid="b0a00d86-fda1-4b5e-9487-9c382c10ee1c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6c776ae-db42-4b62-8116-cf9611186343"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Serif Condensed" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[alamat]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="4" width="100" height="30" uuid="dd7bd9d9-4da3-4bb3-8990-11b6a1664a66">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a08d3a0d-314f-4f09-9db8-5f9ac85602ca"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Serif Condensed" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[gaji]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="560" height="1" uuid="e156e15b-77e7-4e64-a51d-d53db319329d"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="2" width="100" height="30" uuid="51d26fcf-e951-4209-8af6-e2fbd5d92480">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c2bb853a-798d-41ce-bf6b-b1108b4671b7"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans Condensed" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_auditor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="2" width="110" height="30" uuid="50e29913-108f-4fa2-a215-04649bc0964a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="201b89fe-ec9f-4c5e-9256-834e715d3116"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans Condensed" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="2" width="210" height="30" uuid="0adbf271-f4c9-40d4-be06-b03100539b58">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d6c776ae-db42-4b62-8116-cf9611186343"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Sans Condensed" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{alamat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="1" width="100" height="30" uuid="7a417a7a-d5c9-43f1-9cca-c2331997be2d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a08d3a0d-314f-4f09-9db8-5f9ac85602ca"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="DejaVu Serif Condensed" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gaji}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="21" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="150" splitType="Stretch">
+			<textField>
+				<reportElement x="380" y="24" width="100" height="30" uuid="9c1baa23-9116-42a8-b8da-dd0e36478978"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="480" y="24" width="100" height="30" uuid="35e51d4b-9734-490c-bc75-f22520d952f8"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="-20" y="70" width="595" height="80" forecolor="#B8C7CF" backcolor="#00609C" uuid="214ed860-bdc8-4f44-9bef-70c7ba893d0e"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="-17" y="86" width="595" height="30" forecolor="#A7B0C4" backcolor="#00609C" uuid="21ad797b-131c-488f-b8dc-0066ba0a4be5"/>
+				<textElement textAlignment="Left">
+					<font fontName="Poppins Light" size="13" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[   Copyright © 2023 Auditor's Manager]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-18" y="111" width="595" height="30" forecolor="#A7B0C4" backcolor="#00609C" uuid="2d13eba7-9fa6-4911-aa8f-96b2090b9c05"/>
+				<textElement textAlignment="Left">
+					<font fontName="Poppins Light" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[   All Rights Reserved]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
