@@ -8,12 +8,17 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import net.proteanit.sql.DbUtils;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -34,6 +39,7 @@ public class File extends javax.swing.JFrame {
         conn = Koneksi.connectRb();
         initUI();
         populateTable();
+        populateCB();
     }
 
     public void initUI() {
@@ -76,6 +82,28 @@ public class File extends javax.swing.JFrame {
         }
     }
 
+    private void populateCB() {
+        String sqlQuery = "SELECT * FROM files";
+        idKlienSearchCb.addItem("");
+        noLaiSearchCb.addItem("");
+        idKlienTxt.addItem("");
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                idKlienSearchCb.addItem(rs.getString(1));
+                noLaiSearchCb.addItem(rs.getString(2));
+                idKlienTxt.addItem(rs.getString(1));
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
     public void close() {
         WindowEvent closeWindow = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeWindow);
@@ -104,6 +132,9 @@ public class File extends javax.swing.JFrame {
         navFile = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        navKelolaAkun = new javax.swing.JPanel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -112,7 +143,6 @@ public class File extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        idKlienTxt = new javax.swing.JTextField();
         noLaiTxt = new javax.swing.JTextField();
         laiTxt = new javax.swing.JTextField();
         neracaTxt = new javax.swing.JTextField();
@@ -134,9 +164,15 @@ public class File extends javax.swing.JFrame {
         updateBtn = new javax.swing.JButton();
         saveBtn = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
-        searchTxt = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        idKlienSearchCb = new javax.swing.JComboBox<>();
+        jLabel23 = new javax.swing.JLabel();
+        noLaiSearchCb = new javax.swing.JComboBox<>();
+        exportBtn = new javax.swing.JButton();
+        idKlienTxt = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1429, 720));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
 
@@ -357,6 +393,46 @@ public class File extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("AM");
 
+        navKelolaAkun.setBackground(new java.awt.Color(0, 51, 102));
+        navKelolaAkun.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseExited(evt);
+            }
+        });
+
+        jLabel24.setFont(new java.awt.Font("Poppins Medium", 1, 18)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel24.setText("Account");
+
+        jLabel21.setIcon(new javax.swing.ImageIcon("D:\\KULIAH\\SEMESTER 3\\PROJECT BASDAT\\projectAkhir\\cog-solid-24-3.png")); // NOI18N
+
+        javax.swing.GroupLayout navKelolaAkunLayout = new javax.swing.GroupLayout(navKelolaAkun);
+        navKelolaAkun.setLayout(navKelolaAkunLayout);
+        navKelolaAkunLayout.setHorizontalGroup(
+            navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navKelolaAkunLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        navKelolaAkunLayout.setVerticalGroup(
+            navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navKelolaAkunLayout.createSequentialGroup()
+                .addContainerGap(8, Short.MAX_VALUE)
+                .addGroup(navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel21)
+                    .addComponent(jLabel24))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -371,6 +447,7 @@ public class File extends javax.swing.JFrame {
                 .addGap(71, 71, 71)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(navKelolaAkun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,7 +466,9 @@ public class File extends javax.swing.JFrame {
                 .addComponent(navAfiliator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(navFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(navKelolaAkun, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51))
         );
 
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -516,11 +595,48 @@ public class File extends javax.swing.JFrame {
         });
 
         jLabel14.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jLabel14.setText("Search by ID Klien");
+        jLabel14.setText("ID Klien");
 
-        searchTxt.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                searchTxtKeyTyped(evt);
+        jLabel25.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jLabel25.setText("Search");
+
+        idKlienSearchCb.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                idKlienSearchCbPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+
+        jLabel23.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jLabel23.setText("No. LAI");
+
+        noLaiSearchCb.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                noLaiSearchCbPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+
+        exportBtn.setText("Export to Excel");
+        exportBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportBtnActionPerformed(evt);
+            }
+        });
+
+        idKlienTxt.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                idKlienTxtPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
 
@@ -533,66 +649,68 @@ public class File extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(67, 67, 67)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addGap(18, 18, 18)
+                                .addComponent(idKlienSearchCb, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel23)
+                                .addGap(18, 18, 18)
+                                .addComponent(noLaiSearchCb, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(exportBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(newBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(removeBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(updateBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(saveBtn))
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jLabel25))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(neracaTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                                            .addComponent(laiTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                                            .addComponent(calkTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
-                                            .addComponent(noLaiTxt)
-                                            .addComponent(idKlienTxt))
-                                        .addGap(42, 42, 42)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(browseBtn1)
-                                            .addComponent(browseBtn2)
-                                            .addComponent(browseBtn3))
-                                        .addGap(51, 51, 51)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel7)
-                                            .addComponent(jLabel9))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(labarugiTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(arusKasTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(keteranganTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(42, 42, 42)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(browseBtn4)
-                                            .addComponent(browseBtn5)
-                                            .addComponent(browseBtn6)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel14)
-                                        .addGap(40, 40, 40)
-                                        .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(newBtn)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(removeBtn)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(updateBtn)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(saveBtn)))
-                                .addGap(617, 617, 617))))
+                                    .addComponent(neracaTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                                    .addComponent(laiTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                                    .addComponent(calkTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                                    .addComponent(noLaiTxt)
+                                    .addComponent(idKlienTxt, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(42, 42, 42)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(browseBtn1)
+                                    .addComponent(browseBtn2)
+                                    .addComponent(browseBtn3))
+                                .addGap(51, 51, 51)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel9))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labarugiTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(arusKasTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(keteranganTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(42, 42, 42)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(browseBtn4)
+                                    .addComponent(browseBtn5)
+                                    .addComponent(browseBtn6))))
+                        .addGap(617, 617, 617))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(504, 504, 504)
                         .addComponent(jLabel18)
-                        .addContainerGap())))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -646,11 +764,16 @@ public class File extends javax.swing.JFrame {
                     .addComponent(updateBtn)
                     .addComponent(removeBtn)
                     .addComponent(newBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addComponent(jLabel25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
-                .addGap(16, 16, 16)
+                    .addComponent(jLabel14)
+                    .addComponent(idKlienSearchCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel23)
+                    .addComponent(noLaiSearchCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exportBtn))
+                .addGap(15, 15, 15)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
@@ -722,7 +845,7 @@ public class File extends javax.swing.JFrame {
         // TODO add your handling code here:
         LaporanKeuangan lk = new LaporanKeuangan();
         close();
-        
+
         lk.show();
     }//GEN-LAST:event_navLaporanKeuanganMouseClicked
 
@@ -775,24 +898,29 @@ public class File extends javax.swing.JFrame {
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         // TODO add your handling code here:
-        String idKlien = idKlienTxt.getText();
+        String idKlien = (String) idKlienTxt.getSelectedItem();
 
         String sqlQuery = "DELETE FROM files WHERE ID_klien='" + idKlien + "'";
 
         try {
-            pst = conn.prepareStatement(sqlQuery);
-            idKlienTxt.setText("");
-            noLaiTxt.setText("");
-            laiTxt.setText("");
-            neracaTxt.setText("");
-            calkTxt.setText("");
-            labarugiTxt.setText("");
-            arusKasTxt.setText("");
-            keteranganTxt.setText("");
+            if (idKlienTxt.getSelectedItem() != null) {
+                pst = conn.prepareStatement(sqlQuery);
+                idKlienTxt.setSelectedItem("");
+                noLaiTxt.setText("");
+                laiTxt.setText("");
+                neracaTxt.setText("");
+                calkTxt.setText("");
+                labarugiTxt.setText("");
+                arusKasTxt.setText("");
+                keteranganTxt.setText("");
 
-            pst.executeUpdate();
-            populateTable();
-            JOptionPane.showMessageDialog(null, "Data Successfully Removed");
+                pst.executeUpdate();
+                populateTable();
+                JOptionPane.showMessageDialog(null, "Data Successfully Removed");
+            } else {
+                JOptionPane.showMessageDialog(null, "Theres Nothing to Remove");
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -811,7 +939,7 @@ public class File extends javax.swing.JFrame {
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
-        String idKlien = idKlienTxt.getText();
+        String idKlien = (String) idKlienTxt.getSelectedItem();
         String noLai = noLaiTxt.getText();
         String fileLai = laiTxt.getText();
         String fileNeraca = neracaTxt.getText();
@@ -843,7 +971,7 @@ public class File extends javax.swing.JFrame {
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         // TODO add your handling code here:
-        String idKlien = idKlienTxt.getText();
+        String idKlien = (String) idKlienTxt.getSelectedItem();
         String noLai = noLaiTxt.getText();
         String fileLai = laiTxt.getText();
         String fileNeraca = neracaTxt.getText();
@@ -870,7 +998,7 @@ public class File extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Data Added Successfully");
             populateTable();
 
-            idKlienTxt.setText("");
+            idKlienTxt.setSelectedItem("");
             noLaiTxt.setText("");
             laiTxt.setText("");
             neracaTxt.setText("");
@@ -880,7 +1008,7 @@ public class File extends javax.swing.JFrame {
             keteranganTxt.setText("");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-            idKlienTxt.setText("");
+            idKlienTxt.setSelectedItem("");
             noLaiTxt.setText("");
             laiTxt.setText("");
             neracaTxt.setText("");
@@ -956,26 +1084,12 @@ public class File extends javax.swing.JFrame {
         keteranganTxt.setText(fileName);
     }//GEN-LAST:event_browseBtn6ActionPerformed
 
-    private void searchTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTxtKeyTyped
-        String key = searchTxt.getText();
-        String sqlQuery = "SELECT * FROM files WHERE ID_klien LIKE '%" + key + "%'";
-
-        try {
-            pst = conn.prepareStatement(sqlQuery);
-            rs = pst.executeQuery();
-            fileTbl.setModel(DbUtils.resultSetToTableModel(rs));
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }        // TODO add your handling code here:
-
-    }//GEN-LAST:event_searchTxtKeyTyped
-
     private void newBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBtnActionPerformed
         // TODO add your handling code here:
         isEditing = true;
         updateFields();
         updateButtons();
-        idKlienTxt.setText("");
+        idKlienTxt.setSelectedItem("");
         noLaiTxt.setText("");
         laiTxt.setText("");
         neracaTxt.setText("");
@@ -997,7 +1111,7 @@ public class File extends javax.swing.JFrame {
 
             if (rs.next()) {
                 String idKlien = rs.getString(1);
-                idKlienTxt.setText(idKlien);
+                idKlienTxt.setSelectedItem(idKlien);
                 String noLai = rs.getString(2);
                 noLaiTxt.setText(noLai);
                 String fileLai = rs.getString(3);
@@ -1038,6 +1152,134 @@ public class File extends javax.swing.JFrame {
     private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel19MouseClicked
+
+    private void navKelolaAkunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseClicked
+        // TODO add your handling code here:
+        Setting st = new Setting();
+        close();
+
+        st.show();
+    }//GEN-LAST:event_navKelolaAkunMouseClicked
+
+    private void navKelolaAkunMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseEntered
+        // TODO add your handling code here:
+        navKelolaAkun.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        navKelolaAkun.setBackground(new Color(0, 102, 153));
+    }//GEN-LAST:event_navKelolaAkunMouseEntered
+
+    private void navKelolaAkunMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseExited
+        // TODO add your handling code here:
+        navKelolaAkun.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        navKelolaAkun.setBackground(new Color(0, 51, 102));
+    }//GEN-LAST:event_navKelolaAkunMouseExited
+
+    private void idKlienSearchCbPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_idKlienSearchCbPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+        String key = (String) idKlienSearchCb.getSelectedItem();
+        String sqlQuery = "SELECT * FROM files WHERE ID_klien LIKE '%" + key + "%'";
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+            fileTbl.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_idKlienSearchCbPopupMenuWillBecomeInvisible
+
+    private void noLaiSearchCbPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_noLaiSearchCbPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+        String key = (String) noLaiSearchCb.getSelectedItem();
+        String sqlQuery = "SELECT * FROM files WHERE no_LAI LIKE '%" + key + "%'";
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+            fileTbl.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_noLaiSearchCbPopupMenuWillBecomeInvisible
+
+    private void idKlienTxtPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_idKlienTxtPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+        String key = (String) idKlienTxt.getSelectedItem();
+        String sqlQuery = "SELECT * FROM files WHERE ID_klien LIKE '%" + key + "%'";
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                noLaiTxt.setText(rs.getString(2));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_idKlienTxtPopupMenuWillBecomeInvisible
+
+    private void exportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportBtnActionPerformed
+        // TODO add your handling code here:
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify a file to save");
+
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files (*.xlsx)", "xlsx");
+            fileChooser.setFileFilter(filter);
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                String filename = fileChooser.getSelectedFile().getAbsolutePath();
+
+                if (!filename.toLowerCase().endsWith(".xlsx")) {
+                    filename += ".xlsx";
+                }
+
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                XSSFSheet sheet = workbook.createSheet("file_tambahan");
+                XSSFRow header = sheet.createRow((short) 0);
+                header.createCell((short) 0).setCellValue("ID Klien");
+                header.createCell((short) 1).setCellValue("No. LAI");
+                header.createCell((short) 2).setCellValue("file_LAI");
+                header.createCell((short) 3).setCellValue("File Neraca");
+                header.createCell((short) 4).setCellValue("File CALK");
+                header.createCell((short) 5).setCellValue("File Laba Rugi");
+                header.createCell((short) 6).setCellValue("File Arus Kas");
+                header.createCell((short) 7).setCellValue("File Keterangan");
+
+                String sqlQuery = "SELECT * FROM files";
+                pst = conn.prepareStatement(sqlQuery);
+                rs = pst.executeQuery();
+                int i = 1;
+
+                while (rs.next()) {
+                    XSSFRow resultRow = sheet.createRow((short) i);
+                    resultRow.createCell((short) 0).setCellValue(rs.getString("ID_klien"));
+                    resultRow.createCell((short) 1).setCellValue(rs.getString("no_LAI"));
+                    resultRow.createCell((short) 2).setCellValue(rs.getString("file_LAI"));
+                    resultRow.createCell((short) 3).setCellValue(rs.getString("file_neraca"));
+                    resultRow.createCell((short) 4).setCellValue(rs.getString("file_calk"));
+                    resultRow.createCell((short) 5).setCellValue(rs.getString("file_labarugi"));
+                    resultRow.createCell((short) 6).setCellValue(rs.getString("file_arus_kas"));
+                    resultRow.createCell((short) 7).setCellValue(rs.getString("file_keterangan"));
+                    i++;
+                }
+
+                try (FileOutputStream fileout = new FileOutputStream(filename)) {
+                    workbook.write(fileout);
+                    JOptionPane.showMessageDialog(null, "Excel File Successfully Created!");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_exportBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1083,8 +1325,10 @@ public class File extends javax.swing.JFrame {
     private javax.swing.JButton browseBtn5;
     private javax.swing.JButton browseBtn6;
     private javax.swing.JTextField calkTxt;
+    private javax.swing.JButton exportBtn;
     private javax.swing.JTable fileTbl;
-    private javax.swing.JTextField idKlienTxt;
+    private javax.swing.JComboBox<String> idKlienSearchCb;
+    private javax.swing.JComboBox<String> idKlienTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1094,7 +1338,11 @@ public class File extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1112,13 +1360,14 @@ public class File extends javax.swing.JFrame {
     private javax.swing.JPanel navFile;
     private javax.swing.JPanel navHasilAudit;
     private javax.swing.JPanel navInfoKlien;
+    private javax.swing.JPanel navKelolaAkun;
     private javax.swing.JPanel navLaporanKeuangan;
     private javax.swing.JTextField neracaTxt;
     private javax.swing.JButton newBtn;
+    private javax.swing.JComboBox<String> noLaiSearchCb;
     private javax.swing.JTextField noLaiTxt;
     private javax.swing.JButton removeBtn;
     private javax.swing.JButton saveBtn;
-    private javax.swing.JTextField searchTxt;
     private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }

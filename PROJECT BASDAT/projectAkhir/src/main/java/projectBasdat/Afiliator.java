@@ -8,16 +8,22 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import net.proteanit.sql.DbUtils;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -35,7 +41,8 @@ public class Afiliator extends javax.swing.JFrame {
         conn = Koneksi.connectRb();
         initUI();
         populateTable();
-
+        populateCB();
+        populateCB2();
     }
 
     public void initUI() {
@@ -50,16 +57,18 @@ public class Afiliator extends javax.swing.JFrame {
     }
 
     public void updateFields() {
-        idPihakTerasosiasiTxt.setEnabled(isEditing);
-        namaTxt.setEnabled(isEditing);
         idKlienTxt.setEnabled(isEditing);
+        namaTxt.setEnabled(isEditing);
+        idAfiliatorTxt.setEnabled(isEditing);
         laiTerasosiasiTxt.setEnabled(isEditing);
+        laiTerasosiasiTxt.setEditable(false);
     }
 
     public void close() {
         WindowEvent closeWindow = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeWindow);
     }
+
 
     private void populateTable() {
         String sqlQuery = "SELECT * FROM afiliator";
@@ -68,6 +77,42 @@ public class Afiliator extends javax.swing.JFrame {
             pst = conn.prepareStatement(sqlQuery);
             rs = pst.executeQuery();
             afiliatorTbl.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    private void populateCB2() {
+        String sqlQuery = "SELECT * FROM hasil_audit";
+        idKlienSearchCb.addItem("");
+        idKlienTxt.addItem("");
+        
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                idKlienSearchCb.addItem(rs.getString(1));
+                idKlienTxt.addItem(rs.getString(1));
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+    private void populateCB() {
+        String sqlQuery = "SELECT * FROM afiliator";
+        idAfiliatorSearchCb.addItem("");
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                idAfiliatorSearchCb.addItem(rs.getString(1));
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -96,11 +141,13 @@ public class Afiliator extends javax.swing.JFrame {
         navFile = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        navKelolaAkun = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         namaTxt = new javax.swing.JTextField();
-        laiTerasosiasiTxt = new javax.swing.JTextField();
         newBtn = new javax.swing.JButton();
         removeBtn = new javax.swing.JButton();
         updateBtn = new javax.swing.JButton();
@@ -111,11 +158,19 @@ public class Afiliator extends javax.swing.JFrame {
         cetakBtn = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         searchTxt = new javax.swing.JTextField();
-        idPihakTerasosiasiTxt = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        idKlienTxt = new javax.swing.JTextField();
+        idAfiliatorTxt = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        idAfiliatorSearchCb = new javax.swing.JComboBox<>();
+        jLabel25 = new javax.swing.JLabel();
+        idKlienSearchCb = new javax.swing.JComboBox<>();
+        exportTxt = new javax.swing.JButton();
+        idKlienTxt = new javax.swing.JComboBox<>();
+        laiTerasosiasiTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1429, 750));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 102));
 
@@ -331,6 +386,46 @@ public class Afiliator extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("AM");
 
+        navKelolaAkun.setBackground(new java.awt.Color(0, 51, 102));
+        navKelolaAkun.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseExited(evt);
+            }
+        });
+
+        jLabel23.setFont(new java.awt.Font("Poppins Medium", 1, 18)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel23.setText("Account");
+
+        jLabel5.setIcon(new javax.swing.ImageIcon("D:\\KULIAH\\SEMESTER 3\\PROJECT BASDAT\\projectAkhir\\cog-solid-24-3.png")); // NOI18N
+
+        javax.swing.GroupLayout navKelolaAkunLayout = new javax.swing.GroupLayout(navKelolaAkun);
+        navKelolaAkun.setLayout(navKelolaAkunLayout);
+        navKelolaAkunLayout.setHorizontalGroup(
+            navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navKelolaAkunLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        navKelolaAkunLayout.setVerticalGroup(
+            navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navKelolaAkunLayout.createSequentialGroup()
+                .addContainerGap(8, Short.MAX_VALUE)
+                .addGroup(navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel23))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -345,6 +440,7 @@ public class Afiliator extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(73, 73, 73))
+            .addComponent(navKelolaAkun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,7 +459,9 @@ public class Afiliator extends javax.swing.JFrame {
                 .addComponent(navAfiliator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(navFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(264, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(navKelolaAkun, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
         );
 
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
@@ -432,7 +530,7 @@ public class Afiliator extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Poppins", 1, 36)); // NOI18N
         jLabel18.setText("AFILIATOR");
 
-        cetakBtn.setText("Cetak");
+        cetakBtn.setText("Print");
         cetakBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cetakBtnActionPerformed(evt);
@@ -440,7 +538,7 @@ public class Afiliator extends javax.swing.JFrame {
         });
 
         jLabel14.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jLabel14.setText("Search by Nama");
+        jLabel14.setText("Nama Afiliator");
 
         searchTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -451,6 +549,52 @@ public class Afiliator extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         jLabel6.setText("ID Klien Terasosiasi");
 
+        jLabel21.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jLabel21.setText("ID Afiliator");
+
+        jLabel24.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jLabel24.setText("Search");
+
+        idAfiliatorSearchCb.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                idAfiliatorSearchCbPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+
+        jLabel25.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jLabel25.setText("ID Klien");
+
+        idKlienSearchCb.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                idKlienSearchCbPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+
+        exportTxt.setText("Export to Excel");
+        exportTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportTxtActionPerformed(evt);
+            }
+        });
+
+        idKlienTxt.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                idKlienTxtPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -458,46 +602,60 @@ public class Afiliator extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(257, 257, 257)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel18)
-                                .addGap(332, 332, 332))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(newBtn)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(removeBtn)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
-                                        .addComponent(updateBtn)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(saveBtn))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel1)
-                                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel3))
-                                        .addGap(52, 52, 52)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(laiTerasosiasiTxt)
-                                            .addComponent(idKlienTxt)
-                                            .addComponent(namaTxt)
-                                            .addComponent(idPihakTerasosiasiTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE))))
-                                .addGap(215, 215, 215))))
+                                .addGap(117, 117, 117))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3))
+                                    .addGap(52, 52, 52)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(namaTxt)
+                                        .addComponent(idKlienTxt, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(idAfiliatorTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                                        .addComponent(laiTerasosiasiTxt)))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(newBtn)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(removeBtn)
+                                    .addGap(120, 120, 120)
+                                    .addComponent(updateBtn)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(saveBtn))))
+                        .addGap(0, 324, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
+                        .addGap(74, 74, 74)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 729, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addGap(40, 40, 40)
-                                .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cetakBtn)))
-                        .addGap(0, 44, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel24)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel14)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel21)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(idAfiliatorSearchCb, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel25)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(idKlienSearchCb, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(exportTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addComponent(cetakBtn))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -508,33 +666,40 @@ public class Afiliator extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(idPihakTerasosiasiTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(idAfiliatorTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(namaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(45, 45, 45)
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idKlienTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(idKlienTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(laiTerasosiasiTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(laiTerasosiasiTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newBtn)
                     .addComponent(removeBtn)
                     .addComponent(updateBtn)
                     .addComponent(saveBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                .addComponent(jLabel24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
-                    .addComponent(cetakBtn))
+                    .addComponent(jLabel21)
+                    .addComponent(idAfiliatorSearchCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25)
+                    .addComponent(idKlienSearchCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cetakBtn)
+                    .addComponent(exportTxt))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addGap(16, 16, 16))
         );
 
         pack();
@@ -657,19 +822,26 @@ public class Afiliator extends javax.swing.JFrame {
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         // TODO add your handling code here:
-        String idAfiliator = idPihakTerasosiasiTxt.getText();
+        String idAfiliator = idAfiliatorTxt.getText();
 
         String sqlQuery = "DELETE FROM afiliator WHERE ID_afiliator='" + idAfiliator + "'";
 
         try {
-            pst = conn.prepareStatement(sqlQuery);
-            idPihakTerasosiasiTxt.setText("");
-            namaTxt.setText("");
-            idKlienTxt.setText("");
-            laiTerasosiasiTxt.setText("");
-            pst.executeUpdate();
-            populateTable();
-            JOptionPane.showMessageDialog(null, "Data Successfully Removed");
+            if (idKlienTxt.getSelectedItem() != null) {
+                pst = conn.prepareStatement(sqlQuery);
+                idKlienTxt.setSelectedItem("");
+                namaTxt.setText("");
+                idAfiliatorTxt.setText("");
+                laiTerasosiasiTxt.setText("");
+                pst.executeUpdate();
+                populateTable();
+                JOptionPane.showMessageDialog(null, "Data Successfully Removed");
+            } else {
+                JOptionPane.showMessageDialog(null, "Theres Nothing to Remove");
+                updateBtn.setEnabled(false);
+                saveBtn.setEnabled(false);
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -677,21 +849,21 @@ public class Afiliator extends javax.swing.JFrame {
         boolean isEditing = false;
 
         updateBtn.setEnabled(isEditing);
-        idPihakTerasosiasiTxt.setEnabled(isEditing);
-        namaTxt.setEnabled(isEditing);
         idKlienTxt.setEnabled(isEditing);
+        namaTxt.setEnabled(isEditing);
+        idAfiliatorTxt.setEnabled(isEditing);
         laiTerasosiasiTxt.setEnabled(isEditing);
     }//GEN-LAST:event_removeBtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
-        String idTerasosiasi = idPihakTerasosiasiTxt.getText();
+        String idTerasosiasi = idAfiliatorTxt.getText();
         String namaTerasosiasi = namaTxt.getText();
-        String idKlien = idKlienTxt.getText();
-        String noLai = laiTerasosiasiTxt.getText();
-        
+        String idKlien = (String) idKlienTxt.getSelectedItem();
+        String noLai = (String) laiTerasosiasiTxt.getText();
+
         String sqlQuery = "UPDATE afiliator SET nama_afiliator=?, ID_klien=?, no_LAI=? WHERE ID_afiliator=?";
-        
+
         try {
             pst = conn.prepareStatement(sqlQuery);
             pst.setString(1, namaTerasosiasi);
@@ -709,9 +881,9 @@ public class Afiliator extends javax.swing.JFrame {
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
         // TODO add your handling code here:
-        String idTerasosiasi = idPihakTerasosiasiTxt.getText();
+        String idTerasosiasi = idAfiliatorTxt.getText();
         String namaTerasosiasi = namaTxt.getText();
-        String idKlien = idKlienTxt.getText();
+        String idKlien = (String) idKlienTxt.getSelectedItem();
         String noLai = laiTerasosiasiTxt.getText();
 
         String sqlQuery = "INSERT INTO afiliator (ID_afiliator, nama_afiliator, ID_klien, no_LAI) VALUES "
@@ -728,16 +900,16 @@ public class Afiliator extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Data Added Successfully");
             populateTable();
 
-            idPihakTerasosiasiTxt.setText("");
+            idKlienTxt.setSelectedItem("");
             namaTxt.setText("");
-            idKlienTxt.setText("");
+            idAfiliatorTxt.setText("");
             laiTerasosiasiTxt.setText("");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-            idPihakTerasosiasiTxt.setText("");
+            idKlienTxt.setSelectedItem("");
             namaTxt.setText("");
-            idKlienTxt.setText("");
+            idAfiliatorTxt.setText("");
             laiTerasosiasiTxt.setText("");
         }
 
@@ -767,10 +939,10 @@ public class Afiliator extends javax.swing.JFrame {
         isEditing = true;
         updateFields();
         updateButtons();
-        
-        idPihakTerasosiasiTxt.setText("");
+
+        idKlienTxt.setSelectedItem("");
         namaTxt.setText("");
-        idKlienTxt.setText("");
+        idAfiliatorTxt.setText("");
         laiTerasosiasiTxt.setText("");
     }//GEN-LAST:event_newBtnActionPerformed
 
@@ -786,11 +958,11 @@ public class Afiliator extends javax.swing.JFrame {
 
             if (rs.next()) {
                 String idAfiliator = rs.getString(1);
-                idPihakTerasosiasiTxt.setText(idAfiliator);
+                idAfiliatorTxt.setText(idAfiliator);
                 String namaAfiliator = rs.getString(2);
                 namaTxt.setText(namaAfiliator);
                 String idKlien = rs.getString(3);
-                idKlienTxt.setText(idKlien);
+                idKlienTxt.setSelectedItem(idKlien);
                 String noLai = rs.getString(4);
                 laiTerasosiasiTxt.setText(noLai);
             }
@@ -800,26 +972,144 @@ public class Afiliator extends javax.swing.JFrame {
         }
         isEditing = true;
         updateBtn.setEnabled(true);
-        idPihakTerasosiasiTxt.setEnabled(isEditing);
-        namaTxt.setEnabled(isEditing);
         idKlienTxt.setEnabled(isEditing);
+        namaTxt.setEnabled(isEditing);
+        idAfiliatorTxt.setEnabled(isEditing);
         laiTerasosiasiTxt.setEnabled(isEditing);
     }//GEN-LAST:event_afiliatorTblMouseClicked
 
     private void cetakBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cetakBtnActionPerformed
         // TODO add your handling code here:
-         try {
-            
-            String reportPath = "D:\\KULIAH\\SEMESTER 3\\BASDAT\\PROJECT AKHIR\\projectAkhir\\Jasperreports\\laporan_afiliator.jrxml";
+        try {
+
+            String reportPath = "Jasperreports/laporan_afiliator.jrxml";
             JasperReport jr = JasperCompileManager.compileReport(reportPath);
             JasperPrint jp = JasperFillManager.fillReport(jr, null, conn);
             JasperViewer.viewReport(jp);
-            
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_cetakBtnActionPerformed
+
+    private void navKelolaAkunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseClicked
+        // TODO add your handling code here:
+        Setting st = new Setting();
+        close();
+
+        st.show();
+    }//GEN-LAST:event_navKelolaAkunMouseClicked
+
+    private void navKelolaAkunMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseEntered
+        // TODO add your handling code here:
+        navKelolaAkun.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        navKelolaAkun.setBackground(new Color(0, 102, 153));
+
+    }//GEN-LAST:event_navKelolaAkunMouseEntered
+
+    private void navKelolaAkunMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseExited
+        // TODO add your handling code here:
+        navKelolaAkun.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        navKelolaAkun.setBackground(new Color(0, 51, 102));
+    }//GEN-LAST:event_navKelolaAkunMouseExited
+
+    private void idAfiliatorSearchCbPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_idAfiliatorSearchCbPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+        String key = (String) idAfiliatorSearchCb.getSelectedItem();
+        String sqlQuery = "SELECT * FROM afiliator WHERE ID_afiliator LIKE '%" + key + "%'";
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+            afiliatorTbl.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_idAfiliatorSearchCbPopupMenuWillBecomeInvisible
+
+    private void idKlienSearchCbPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_idKlienSearchCbPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+        String key = (String) idKlienSearchCb.getSelectedItem();
+        String sqlQuery = "SELECT * FROM afiliator WHERE ID_klien LIKE '%" + key + "%'";
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+            afiliatorTbl.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_idKlienSearchCbPopupMenuWillBecomeInvisible
+
+    private void idKlienTxtPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_idKlienTxtPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+        String key = (String) idKlienTxt.getSelectedItem();
+        String sqlQuery = "SELECT * FROM hasil_audit WHERE ID_klien LIKE '%" + key + "%'";
+        
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+            
+            if (rs.next()) {
+                laiTerasosiasiTxt.setText(rs.getString(2));
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_idKlienTxtPopupMenuWillBecomeInvisible
+
+    private void exportTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportTxtActionPerformed
+        // TODO add your handling code here:
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify a file to save");
+
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files (*.xlsx)", "xlsx");
+            fileChooser.setFileFilter(filter);
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                String filename = fileChooser.getSelectedFile().getAbsolutePath();
+
+                if (!filename.toLowerCase().endsWith(".xlsx")) {
+                    filename += ".xlsx";
+                }
+
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                XSSFSheet sheet = workbook.createSheet("daftar_afiliatpr");
+                XSSFRow header = sheet.createRow((short) 0);
+                header.createCell((short) 0).setCellValue("ID Afiliator");
+                header.createCell((short) 1).setCellValue("Nama Afiliator");
+                header.createCell((short) 2).setCellValue("ID Klien Terasosiasi");
+                header.createCell((short) 3).setCellValue("No. LAI Terasosiasi");
+
+                String sqlQuery = "SELECT * FROM afiliator";
+                pst = conn.prepareStatement(sqlQuery);
+                rs = pst.executeQuery();
+                int i = 1;
+
+                while (rs.next()) {
+                    XSSFRow resultRow = sheet.createRow((short) i);
+                    resultRow.createCell((short) 0).setCellValue(rs.getString("ID_afiliator"));
+                    resultRow.createCell((short) 1).setCellValue(rs.getString("nama_afiliator"));
+                    resultRow.createCell((short) 2).setCellValue(rs.getString("ID_klien"));
+                    resultRow.createCell((short) 3).setCellValue(rs.getString("no_LAI"));
+                    i++;
+                }
+
+                try (FileOutputStream fileout = new FileOutputStream(filename)) {
+                    workbook.write(fileout);
+                    JOptionPane.showMessageDialog(null, "Excel File Successfully Created!");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_exportTxtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -847,6 +1137,7 @@ public class Afiliator extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Afiliator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -859,8 +1150,11 @@ public class Afiliator extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable afiliatorTbl;
     private javax.swing.JButton cetakBtn;
-    private javax.swing.JTextField idKlienTxt;
-    private javax.swing.JTextField idPihakTerasosiasiTxt;
+    private javax.swing.JButton exportTxt;
+    private javax.swing.JComboBox<String> idAfiliatorSearchCb;
+    private javax.swing.JTextField idAfiliatorTxt;
+    private javax.swing.JComboBox<String> idKlienSearchCb;
+    private javax.swing.JComboBox<String> idKlienTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -870,9 +1164,14 @@ public class Afiliator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -883,6 +1182,7 @@ public class Afiliator extends javax.swing.JFrame {
     private javax.swing.JPanel navFile;
     private javax.swing.JPanel navHasilAudit;
     private javax.swing.JPanel navInfoKlien;
+    private javax.swing.JPanel navKelolaAkun;
     private javax.swing.JPanel navLaporanKeuangan;
     private javax.swing.JButton newBtn;
     private javax.swing.JButton removeBtn;

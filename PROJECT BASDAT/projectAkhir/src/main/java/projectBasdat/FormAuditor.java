@@ -3,27 +3,41 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package projectBasdat;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import net.proteanit.sql.DbUtils;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import projectBasdat.Afiliator;
+import projectBasdat.File;
+import projectBasdat.InformasiKlien;
+import projectBasdat.Koneksi;
+import projectBasdat.LaporanHasilAudit;
+import projectBasdat.LaporanKeuangan;
 
 /**
  *
  * @author ASUS
  */
 public class FormAuditor extends javax.swing.JFrame {
+
     Connection conn = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
@@ -37,14 +51,15 @@ public class FormAuditor extends javax.swing.JFrame {
         initUI();
         conn = Koneksi.connectRb();
         populateTable();
+        populateCB();
     }
-    
+
     public void initUI() {
         isEditing = false;
         updateButtons();
         updateFields();
     }
-    
+
     public void updateButtons() {
         saveBtn.setEnabled(isEditing);
         updateBtn.setEnabled(isEditing);
@@ -56,10 +71,10 @@ public class FormAuditor extends javax.swing.JFrame {
         alamatTxt.setEnabled(isEditing);
         gajiSpn.setEnabled(isEditing);
     }
-    
+
     private void populateTable() {
         String sqlQuery = "SELECT * FROM auditor";
-        
+
         try {
             pst = conn.prepareStatement(sqlQuery);
             rs = pst.executeQuery();
@@ -67,7 +82,25 @@ public class FormAuditor extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
-    
+
+    private void populateCB() {
+        String sqlQuery = "SELECT * FROM auditor";
+        idCb.addItem("");
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                idCb.addItem(rs.getString(1));
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
     public void close() {
         WindowEvent closeWindow = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(closeWindow);
@@ -107,6 +140,9 @@ public class FormAuditor extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         navAfiliator = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
+        navKelolaAkun = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         searchTxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         cetakBtn = new javax.swing.JButton();
@@ -114,6 +150,10 @@ public class FormAuditor extends javax.swing.JFrame {
         alamatTxt = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         gajiSpn = new javax.swing.JSpinner();
+        jLabel11 = new javax.swing.JLabel();
+        idCb = new javax.swing.JComboBox<>();
+        exportBtn = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -392,6 +432,46 @@ public class FormAuditor extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        navKelolaAkun.setBackground(new java.awt.Color(0, 51, 102));
+        navKelolaAkun.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                navKelolaAkunMouseExited(evt);
+            }
+        });
+
+        jLabel23.setFont(new java.awt.Font("Poppins Medium", 1, 18)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel23.setText("Account");
+
+        jLabel7.setIcon(new javax.swing.ImageIcon("D:\\KULIAH\\SEMESTER 3\\PROJECT BASDAT\\projectAkhir\\cog-solid-24-3.png")); // NOI18N
+
+        javax.swing.GroupLayout navKelolaAkunLayout = new javax.swing.GroupLayout(navKelolaAkun);
+        navKelolaAkun.setLayout(navKelolaAkunLayout);
+        navKelolaAkunLayout.setHorizontalGroup(
+            navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navKelolaAkunLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        navKelolaAkunLayout.setVerticalGroup(
+            navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navKelolaAkunLayout.createSequentialGroup()
+                .addContainerGap(8, Short.MAX_VALUE)
+                .addGroup(navKelolaAkunLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel23))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -406,6 +486,7 @@ public class FormAuditor extends javax.swing.JFrame {
                 .addGap(66, 66, 66)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(navKelolaAkun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -424,7 +505,9 @@ public class FormAuditor extends javax.swing.JFrame {
                 .addComponent(navAfiliator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(navFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 163, Short.MAX_VALUE)
+                .addComponent(navKelolaAkun, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
         );
 
         searchTxt.addActionListener(new java.awt.event.ActionListener() {
@@ -439,9 +522,9 @@ public class FormAuditor extends javax.swing.JFrame {
         });
 
         jLabel5.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        jLabel5.setText("Search by Nama");
+        jLabel5.setText("Nama");
 
-        cetakBtn.setText("Cetak");
+        cetakBtn.setText("Print");
         cetakBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cetakBtnActionPerformed(evt);
@@ -456,6 +539,29 @@ public class FormAuditor extends javax.swing.JFrame {
 
         gajiSpn.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 10000));
 
+        jLabel11.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
+        jLabel11.setText("ID Auditor");
+
+        idCb.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                idCbPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+
+        exportBtn.setText("Export to Excel");
+        exportBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jLabel12.setText("Search");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -464,49 +570,62 @@ public class FormAuditor extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(367, 367, 367)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(153, 153, 153)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cetakBtn)
-                                .addGap(8, 8, 8))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(196, 196, 196)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(newBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(23, 23, 23)
-                                .addComponent(removeBtn))
+                                .addGap(196, 196, 196)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(newBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(23, 23, 23)
+                                        .addComponent(removeBtn))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(342, 342, 342)
+                                        .addComponent(updateBtn)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(saveBtn))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(342, 342, 342)
-                                .addComponent(updateBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(saveBtn))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(126, 126, 126)
+                                .addGap(219, 219, 219)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(171, 171, 171)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(noIDTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                                        .addComponent(namaTxt)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(126, 126, 126)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(noIDTxt)
+                                                .addComponent(namaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(126, 126, 126)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(alamatTxt)
+                                                .addComponent(gajiSpn, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 782, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(126, 126, 126)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(alamatTxt)
-                                        .addComponent(gajiSpn)))))))
-                .addContainerGap(145, Short.MAX_VALUE))
+                                    .addComponent(jLabel5)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLabel11)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(idCb, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(exportBtn)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cetakBtn))))
+                        .addGap(84, 84, 84))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -536,11 +655,16 @@ public class FormAuditor extends javax.swing.JFrame {
                     .addComponent(saveBtn)
                     .addComponent(updateBtn)
                     .addComponent(removeBtn))
-                .addGap(32, 32, 32)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cetakBtn))
+                    .addComponent(cetakBtn)
+                    .addComponent(jLabel11)
+                    .addComponent(idCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exportBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -556,8 +680,8 @@ public class FormAuditor extends javax.swing.JFrame {
         String alamat = alamatTxt.getText();
         int gaji = (int) gajiSpn.getValue();
         String sqlQuery = "INSERT INTO auditor (no_auditor, nama, alamat, gaji) VALUES"
-        + "('" + noIdentitas + "','" + nama + "','" + alamat + "'," + gaji + ");";
-        
+                + "('" + noIdentitas + "','" + nama + "','" + alamat + "'," + gaji + ");";
+
         try {
             pst = conn.prepareStatement(sqlQuery);
             pst.execute();
@@ -567,7 +691,7 @@ public class FormAuditor extends javax.swing.JFrame {
             namaTxt.setText("");
             alamatTxt.setText("");
             gajiSpn.setValue(0);
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
             noIDTxt.setText("");
@@ -575,7 +699,7 @@ public class FormAuditor extends javax.swing.JFrame {
             alamatTxt.setText("");
             gajiSpn.setValue(0);
         }
-        
+
         isEditing = false;
         updateFields();
         updateButtons();
@@ -586,7 +710,7 @@ public class FormAuditor extends javax.swing.JFrame {
         int r = auditorTbl.getSelectedRow();
         String click = auditorTbl.getModel().getValueAt(r, 0).toString();
         String sqlQuery = "SELECT * FROM auditor WHERE no_auditor='" + click + "'";
-        
+
         try {
             pst = conn.prepareStatement(sqlQuery);
             rs = pst.executeQuery();
@@ -599,13 +723,13 @@ public class FormAuditor extends javax.swing.JFrame {
                 alamatTxt.setText(alamat);
                 int gaji = rs.getInt(4);
                 gajiSpn.setValue(gaji);
-                
+
             }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        
+
         noIDTxt.setEnabled(true);
         namaTxt.setEnabled(true);
         alamatTxt.setEnabled(true);
@@ -632,7 +756,7 @@ public class FormAuditor extends javax.swing.JFrame {
         String alamat = alamatTxt.getText();
         int gaji = (int) gajiSpn.getValue();
 
-        String sqlQuery = "UPDATE auditor SET nama=?, alamat=?, gaji=? WHERE no_auditor=" + "'" + noIdentitas+ "'";
+        String sqlQuery = "UPDATE auditor SET nama=?, alamat=?, gaji=? WHERE no_auditor=" + "'" + noIdentitas + "'";
         try {
             pst = conn.prepareStatement(sqlQuery);
             pst.setString(1, nama);
@@ -657,16 +781,28 @@ public class FormAuditor extends javax.swing.JFrame {
         String sqlQuery = "DELETE FROM auditor WHERE no_auditor='" + noIdentitas + "'";
 
         try {
-            noIDTxt.setText("");
-            namaTxt.setText("");
-            pst = conn.prepareStatement(sqlQuery);
-            pst.execute();
-            populateTable();
-            JOptionPane.showMessageDialog(null, "Data Successfully Removed");
+            if (noIDTxt.getText() != null) {
+
+                pst = conn.prepareStatement(sqlQuery);
+                pst.execute();
+                populateTable();
+                JOptionPane.showMessageDialog(null, "Data Successfully Removed");
+                
+                
+            } else {
+                JOptionPane.showMessageDialog(null, "Theres Nothing to Remove");
+                updateBtn.setEnabled(false);
+                saveBtn.setEnabled(false);
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
         
+        noIDTxt.setText("");
+        namaTxt.setText("");
+        alamatTxt.setText("");
+        gajiSpn.setValue("");
         noIDTxt.setEnabled(false);
         namaTxt.setEnabled(false);
         gajiSpn.setEnabled(false);
@@ -676,8 +812,8 @@ public class FormAuditor extends javax.swing.JFrame {
     private void searchTxtKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTxtKeyTyped
         // TODO add your handling code here:
         String key = searchTxt.getText();
-        String sqlQuery = "SELECT * FROM auditor WHERE nama LIKE '%"+key+"%'";
-        
+        String sqlQuery = "SELECT * FROM auditor WHERE nama LIKE '%" + key + "%'";
+
         try {
             pst = conn.prepareStatement(sqlQuery);
             rs = pst.executeQuery();
@@ -691,9 +827,9 @@ public class FormAuditor extends javax.swing.JFrame {
         // TODO add your handling code here:
         InformasiKlien ik = new InformasiKlien();
         close();
-        
+
         ik.show();
-        
+
     }//GEN-LAST:event_navInfoKlienMouseClicked
 
     private void navAuditorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navAuditorMouseClicked
@@ -702,7 +838,7 @@ public class FormAuditor extends javax.swing.JFrame {
 
     private void navInfoKlienMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navInfoKlienMouseEntered
         // TODO add your handling code here:
-        navInfoKlien.setCursor(new Cursor(Cursor.HAND_CURSOR)); 
+        navInfoKlien.setCursor(new Cursor(Cursor.HAND_CURSOR));
         navInfoKlien.setBackground(new Color(0, 102, 153));
     }//GEN-LAST:event_navInfoKlienMouseEntered
 
@@ -737,7 +873,7 @@ public class FormAuditor extends javax.swing.JFrame {
         // TODO add your handling code here:
         LaporanKeuangan lk = new LaporanKeuangan();
         close();
-        
+
         lk.show();
     }//GEN-LAST:event_navLaporanKeuanganMouseClicked
 
@@ -757,7 +893,7 @@ public class FormAuditor extends javax.swing.JFrame {
         // TODO add your handling code here:
         Afiliator af = new Afiliator();
         close();
-        
+
         af.show();
     }//GEN-LAST:event_navAfiliatorMouseClicked
 
@@ -777,7 +913,7 @@ public class FormAuditor extends javax.swing.JFrame {
         // TODO add your handling code here:
         File file = new File();
         close();
-        
+
         file.show();
     }//GEN-LAST:event_navFileMouseClicked
 
@@ -796,13 +932,11 @@ public class FormAuditor extends javax.swing.JFrame {
     private void cetakBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cetakBtnActionPerformed
         // TODO add your handling code here:
         try {
-            
-            String reportPath = "D:\\KULIAH\\SEMESTER 3\\BASDAT\\PROJECT AKHIR\\projectAkhir\\Jasperreports\\auditor_reports.jrxml";
+            String reportPath = "Jasperreports/auditor_reports.jrxml";
             JasperReport jr = JasperCompileManager.compileReport(reportPath);
             JasperPrint jp = JasperFillManager.fillReport(jr, null, conn);
             JasperViewer.viewReport(jp);
-            
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -811,6 +945,94 @@ public class FormAuditor extends javax.swing.JFrame {
     private void searchTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchTxtActionPerformed
+
+    private void navKelolaAkunMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseClicked
+        // TODO add your handling code here:
+        Setting st = new Setting();
+        close();
+
+        st.show();
+    }//GEN-LAST:event_navKelolaAkunMouseClicked
+
+    private void navKelolaAkunMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseEntered
+        // TODO add your handling code here:
+        navKelolaAkun.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        navKelolaAkun.setBackground(new Color(0, 102, 153));
+
+    }//GEN-LAST:event_navKelolaAkunMouseEntered
+
+    private void navKelolaAkunMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navKelolaAkunMouseExited
+        // TODO add your handling code here:
+        navKelolaAkun.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        navKelolaAkun.setBackground(new Color(0, 51, 102));
+    }//GEN-LAST:event_navKelolaAkunMouseExited
+
+    private void idCbPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_idCbPopupMenuWillBecomeInvisible
+        // TODO add your handling code here:
+        String key = (String) idCb.getSelectedItem();
+        String sqlQuery = "SELECT * FROM auditor WHERE no_auditor LIKE '%" + key + "%'";
+
+        try {
+            pst = conn.prepareStatement(sqlQuery);
+            rs = pst.executeQuery();
+            auditorTbl.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_idCbPopupMenuWillBecomeInvisible
+
+    private void exportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportBtnActionPerformed
+        // TODO add your handling code here:
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify a file to save");
+
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files (*.xlsx)", "xlsx");
+            fileChooser.setFileFilter(filter);
+
+            int userSelection = fileChooser.showSaveDialog(this);
+
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                String filename = fileChooser.getSelectedFile().getAbsolutePath();
+
+                if (!filename.toLowerCase().endsWith(".xlsx")) {
+                    filename += ".xlsx";
+                }
+
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                XSSFSheet sheet = workbook.createSheet("Auditor");
+                XSSFRow header = sheet.createRow((short) 0);
+                header.createCell((short) 0).setCellValue("No. Auditor");
+                header.createCell((short) 1).setCellValue("Nama");
+                header.createCell((short) 2).setCellValue("Alamat");
+                header.createCell((short) 3).setCellValue("Gaji");
+
+                String sqlQuery = "SELECT * FROM auditor";
+                pst = conn.prepareStatement(sqlQuery);
+                rs = pst.executeQuery();
+                int i = 1;
+
+                while (rs.next()) {
+                    XSSFRow resultRow = sheet.createRow((short) i);
+                    resultRow.createCell((short) 0).setCellValue(rs.getString(1));
+                    resultRow.createCell((short) 1).setCellValue(rs.getString(2));
+                    resultRow.createCell((short) 2).setCellValue(rs.getString(3));
+                    resultRow.createCell((short) 3).setCellValue(rs.getInt(4));
+                    i++;
+                }
+
+                try (FileOutputStream fileout = new FileOutputStream(filename)) {
+                    workbook.write(fileout);
+                    JOptionPane.showMessageDialog(null, "Excel File Successfully Created!");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_exportBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -851,18 +1073,24 @@ public class FormAuditor extends javax.swing.JFrame {
     private javax.swing.JTextField alamatTxt;
     private javax.swing.JTable auditorTbl;
     private javax.swing.JButton cetakBtn;
+    private javax.swing.JButton exportBtn;
     private javax.swing.JSpinner gajiSpn;
+    private javax.swing.JComboBox<String> idCb;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
@@ -873,6 +1101,7 @@ public class FormAuditor extends javax.swing.JFrame {
     private javax.swing.JPanel navFile;
     private javax.swing.JPanel navHasilAudit;
     private javax.swing.JPanel navInfoKlien;
+    private javax.swing.JPanel navKelolaAkun;
     private javax.swing.JPanel navLaporanKeuangan;
     private javax.swing.JButton newBtn;
     private javax.swing.JTextField noIDTxt;
